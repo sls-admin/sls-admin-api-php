@@ -8,6 +8,8 @@
 
 创建数据库sls_admin,导入/databases/sls_admin.sql文件。
 
+导入成功之后，用户表有一个默认账号：sailengsi/123456
+
 
 ### 七牛配置
 配置文件在/application/config.php，改成你自己的accesskey和secretkey
