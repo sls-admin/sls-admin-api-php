@@ -91,7 +91,7 @@ class System extends Data {
 
     public function getApiRouters(){
         $data=['status'=>200];
-        $data['data']['list']=['/Login/login'=>'登录','/User/selectUser'=>'查看用户列表','/User/saveUser'=>'添加/修改用户','/User/deleteUser'=>'删除用户'];
+        $data['data']['my-key-list']=['/Login/login'=>'登录','/User/selectUser'=>'查看用户列表','/User/saveUser'=>'添加/修改用户','/User/deleteUser'=>'删除用户'];
 
         return $data;
     }

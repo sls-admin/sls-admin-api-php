@@ -92,7 +92,7 @@ class Validate
     // 正则表达式 regex = ['zip'=>'\d{6}',...]
     protected $regex = [];
 
-    // 验证场景 scene = ['edit'=>'name1,name2,...']
+    // 验证场景 scene = ['my-key-edit'=>'name1,name2,...']
     protected $scene = [];
 
     // 验证失败错误信息

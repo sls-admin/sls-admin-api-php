@@ -8,6 +8,7 @@
 
 namespace app\coding\controller;
 
+use think\Cache;
 use think\Session;
 
 class Key {
@@ -15,8 +16,8 @@ class Key {
      * 获取我的key列表
      */
     public function getMyKeys() {
-        $resource = http(config('api_root')."user/".Session::get("global_key")."/keys", [
-            'access_token' => Session::get('access_token')
+        $resource = http(config('api_root')."user/".Cache::get("global_key")."/keys", [
+            'access_token' => Cache::get('access_token')
         ], 'get');
 
         return $resource;
@@ -30,12 +31,22 @@ class Key {
      *
      * @return array
      */
-    public function getDeployKeys($project_name) {
-        $resource = http(config('api_root')."user/".Session::get("global_key")."/project/".$project_name."/git/deploy_keys", [
-            'access_token' => Session::get('access_token')
-        ], 'get');
+    public function getDeployKeys() {
+        $request = request();
+        $namespace=$request->post('namespace') ? $request->post('namespace') : Cache::get("global_key");
+        $project_name=$request->post('project_name');
+        if($project_name){
+            $resource = http(config('api_root')."user/".$namespace."/project/".$project_name."/git/deploy_keys", [
+                'access_token' => Cache::get('access_token')
+            ], 'get');
 
-        return $resource;
+            return $resource;
+        }else{
+            return [
+                'code'=>1,
+                'msg'=>'项目名称不存在',
+            ];
+        }
     }
 
 
@@ -51,8 +62,8 @@ class Key {
      *      expiration  string
      */
     public function createDeployKey($project_name){
-        $resource = http(config('api_root')."user/".Session::get("global_key")."/project/".$project_name."/git/deploy_key", [
-            'access_token' => Session::get('access_token')
+        $resource = http(config('api_root')."user/".Cache::get("global_key")."/project/".$project_name."/git/deploy_key", [
+            'access_token' => Cache::get('access_token')
         ], 'post');
         return $resource;
     }
@@ -67,8 +78,8 @@ class Key {
     public function deleteDeployKey($project_name,$deploy_key_id){
         //  /api/user/{global_key}/project/*/git/unbind_deploy_key/{id}
 
-        $resource = http(config('api_root')."user/".Session::get("global_key")."/project/".$project_name."/git/unbind_deploy_key/".$deploy_key_id, [
-            'access_token' => Session::get('access_token')
+        $resource = http(config('api_root')."user/".Cache::get("global_key")."/project/".$project_name."/git/unbind_deploy_key/".$deploy_key_id, [
+            'access_token' => Cache::get('access_token')
         ], 'post');
         return $resource;
     }

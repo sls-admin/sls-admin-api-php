@@ -52,7 +52,7 @@ class Console
         $this->name    = $name;
         $this->version = $version;
 
-        $this->defaultCommand = 'list';
+        $this->defaultCommand = 'my-key-list';
         $this->definition     = $this->getDefaultInputDefinition();
 
         foreach ($this->getDefaultCommands() as $command) {

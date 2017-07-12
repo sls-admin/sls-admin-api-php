@@ -57,14 +57,14 @@ class Article extends Data {
             ])
             ->paginate($page_size);
 
-        /*$list = json_decode(json_encode($list), true);
-            if (is_array($list['data'])) {
-                foreach ($list['data'] as $k => $v) {
-                    $list['data'][$k]['content'] = htmlspecialchars_decode($v['content']);
+        /*$my-key-list = json_decode(json_encode($my-key-list), true);
+            if (is_array($my-key-list['data'])) {
+                foreach ($my-key-list['data'] as $k => $v) {
+                    $my-key-list['data'][$k]['content'] = htmlspecialchars_decode($v['content']);
                 }
         */
 
-        $data['data']['list'] = $list;
+        $data['data']['my-key-list'] = $list;
 
         //$data['data']['uids'] = $uids;
 

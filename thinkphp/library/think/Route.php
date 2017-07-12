@@ -35,7 +35,7 @@ class Route
     private static $rest = [
         'index'  => ['get', '', 'index'],
         'create' => ['get', '/create', 'create'],
-        'edit'   => ['get', '/:id/edit', 'edit'],
+        'my-key-edit'   => ['get', '/:id/my-key-edit', 'my-key-edit'],
         'read'   => ['get', '/:id', 'read'],
         'save'   => ['post', '', 'save'],
         'update' => ['put', '/:id', 'update'],

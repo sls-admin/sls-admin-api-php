@@ -8,13 +8,15 @@
 
 namespace app\coding\controller;
 
+use think\Cache;
 use \think\Session;
 
 class Callback extends User{
     public function index(){
 
-        dump($_GET);
-        die;
+//        dump($_GET);
+//        dump(Session::get('temp_callback'));
+//        die;
 
         $request       = request();
         $url = config('api_root')."oauth/access_token";
@@ -27,13 +29,18 @@ class Callback extends User{
         $res = http($url, $data, 'POST');
         $res_arr=json_decode($res,true);
 
-        // var_dump($res_arr);
+        //  dump($res_arr);
         // var_dump(empty($res_arr['code']));
         // exit;
 
+
         if ($res_arr && empty($res_arr['code'])) {
-            Session::set('access_token',$res_arr['access_token']);
-            return $this->getUserInfo();
+//            Cache::set('access_token',$res_arr['access_token']);
+            Cache::set('access_token',$res_arr['access_token'],$res_arr['expires_in']);
+
+//            return $this->getUserInfo();
+            echo '<script>window.location.href="http://localhost:1126/#login?type=true";</script>';
+            die;
         }else{
             return $res;
         }

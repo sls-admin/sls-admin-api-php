@@ -8,7 +8,7 @@
 
 namespace app\coding\controller;
 
-use think\Session;
+use think\Cache;
 
 class Project {
     /**
@@ -28,7 +28,14 @@ class Project {
         'page'=>1,
         'pageSize'=>10
     ]) {
-        $data['access_token']=Session::get('access_token');
+        $request = request();
+        if($request->get('page')){
+            $data['page']=$request->get('page');
+        }
+        if($request->get('pageSize')){
+            $data['pageSize']=$request->get('pageSize');
+        }
+        $data['access_token']=Cache::get('access_token');
         $resource = http(config('api_root')."user/projects", $data, 'get');
         return $resource;
     }
@@ -49,7 +56,15 @@ class Project {
         'page'=>1,
         'pageSize'=>10
     ]){
-        $data['access_token']=Session::get('access_token');
+        $request = request();
+        if($request->get('page')){
+            $data['page']=$request->get('page');
+        }
+        if($request->get('pageSize')){
+            $data['pageSize']=$request->get('pageSize');
+        }
+
+        $data['access_token']=Cache::get('access_token');
         $resource = http(config('api_root')."user/projects/private", $data, 'get');
         return $resource;
     }
@@ -70,8 +85,15 @@ class Project {
         'page'=>1,
         'pageSize'=>10
     ]){
-        $data['access_token']=Session::get('access_token');
-        $resource = http(config('api_root')."user/".Session::get("global_key")."/projects/public", $data, 'get');
+        $request = request();
+        if($request->get('page')){
+            $data['page']=$request->get('page');
+        }
+        if($request->get('pageSize')){
+            $data['pageSize']=$request->get('pageSize');
+        }
+        $data['access_token']=Cache::get('access_token');
+        $resource = http(config('api_root')."user/".Cache::get("global_key")."/projects/public", $data, 'get');
         return $resource;
     }
 }
