@@ -4,7 +4,6 @@ namespace app\sls_admin\controller;
 
 use org\util\Categories;
 use think\Db;
-use think\Controller;
 use think\Request;
 
 class Data extends Auth {
@@ -24,7 +23,9 @@ class Data extends Auth {
         'create_time',
         'update_time',
     ]) {
-        return db('user')->field($field)->select();
+        return db('user')
+            ->field($field)
+            ->select();
     }
 
     /**
