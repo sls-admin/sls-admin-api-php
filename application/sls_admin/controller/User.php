@@ -5,7 +5,7 @@ use org\util\Categories;
 use think\Db;
 use think\Request;
 
-class User {
+class User extends Data {
 
     /**
      * 查询用户列表信息
@@ -14,7 +14,7 @@ class User {
     public function selectUser() {
         $data = ['status' => 200];
 
-        /*//接收请求参数
+        //接收请求参数
         $request = request();
         $params  = $request->get();
 
@@ -41,9 +41,9 @@ class User {
 
         //通过无线分类，获取到当前用户的子数据
         $categories = new Categories();
-        $list       = $categories->unlimitedForLevel($list, $userinfo['id']);*/
+        $list       = $categories->unlimitedForLevel($list, $userinfo['id']);
 
-        $data['data'] = [];
+        $data['data']['list'] = $list;
 
         return $data;
     }
