@@ -15,7 +15,7 @@ class User extends Data {
         $data = ['status' => 200];
 
         //接收请求参数
-        $request = request();
+       /* $request = request();
         $params  = $request->get();
 
         //获取当前用户信息和用户列表
@@ -41,9 +41,9 @@ class User extends Data {
 
         //通过无线分类，获取到当前用户的子数据
         $categories = new Categories();
-        $list       = $categories->unlimitedForLevel($list, $userinfo['id']);
+        $list       = $categories->unlimitedForLevel($list, $userinfo['id']);*/
 
-        $data['data']['list'] = $list;
+        $data['data']['list'] = [];
 
         return $data;
     }
