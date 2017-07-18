@@ -24,7 +24,7 @@ class Data extends Auth {
         'update_time',
     ]) {
         return db('user')
-            ->where($where)
+            ->where()
             ->field($field)
             ->select();
     }
