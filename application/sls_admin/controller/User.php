@@ -38,7 +38,8 @@ class User extends Data {
         }
 
         //        $list = $this->getUserList($where);
-        $list = db('user')->select();
+
+        $list = db('user')->find();
 
         //通过无线分类，获取到当前用户的子数据
         /*$categories = new Categories();
