@@ -24,13 +24,13 @@ class User extends Data {
 
         //搜索查询
         $where = [];
-        if ($request->get('username')) {
+        if (!empty($request->get('username'))) {
             $where['username'] = [
                 'like',
                 '%'.$request->get('username').'%'
             ];
         }
-        if ($request->get('email')) {
+        if (!empty($request->get('email'))) {
             $where['email'] = [
                 'like',
                 '%'.$request->get('email').'%'
