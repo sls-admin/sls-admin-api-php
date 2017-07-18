@@ -3,6 +3,7 @@
 namespace app\sls_admin\controller;
 
 use org\util\Categories;
+use think\Db;
 use think\Controller;
 use think\Request;
 
