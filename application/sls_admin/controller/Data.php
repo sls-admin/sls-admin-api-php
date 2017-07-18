@@ -23,10 +23,7 @@ class Data extends Auth {
         'create_time',
         'update_time',
     ]) {
-        return db('user')
-            ->where()
-            ->field($field)
-            ->select();
+        return db('user')->field($field)->select();
     }
 
     /**

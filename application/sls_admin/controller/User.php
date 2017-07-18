@@ -42,7 +42,7 @@ class User extends Data {
         /*$categories = new Categories();
         $list       = $categories->unlimitedForLevel($list, $userinfo['id']);*/
 
-        $data['data']['list'] = $userinfo;
+        $data['data']['list'] = $list;
 
         return $data;
     }
