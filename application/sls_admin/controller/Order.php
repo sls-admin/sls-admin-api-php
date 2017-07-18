@@ -62,7 +62,7 @@ class Order extends Data {
             ])
             ->paginate($page_size);
 
-        $data['data']['my-key-list'] = $list;
+        $data['data']['list'] = $list;
 
         return $data;
     }

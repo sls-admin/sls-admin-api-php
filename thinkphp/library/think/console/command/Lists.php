@@ -26,7 +26,7 @@ class Lists extends Command
      */
     protected function configure()
     {
-        $this->setName('my-key-list')->setDefinition($this->createDefinition())->setDescription('Lists commands')->setHelp(<<<EOF
+        $this->setName('list')->setDefinition($this->createDefinition())->setDescription('Lists commands')->setHelp(<<<EOF
 The <info>%command.name%</info> command lists all commands:
 
   <info>php %command.full_name%</info>
@@ -35,7 +35,7 @@ You can also display the commands for a specific namespace:
 
   <info>php %command.full_name% test</info>
 
-It's also possible to get raw my-key-list of commands (useful for embedding command runner):
+It's also possible to get raw list of commands (useful for embedding command runner):
 
   <info>php %command.full_name% --raw</info>
 EOF
@@ -68,7 +68,7 @@ EOF
     {
         return new InputDefinition([
             new InputArgument('namespace', InputArgument::OPTIONAL, 'The namespace name'),
-            new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw command my-key-list')
+            new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw command list')
         ]);
     }
 }

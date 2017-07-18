@@ -54,7 +54,7 @@ class Open extends Data {
             $data['status'] = 1;
             $data['msg']    = $res[2];
         } else {
-            $data['data']['my-key-list']            = $res[0];
+            $data['data']['list']            = $res[0];
             $data['data']['other']['marker'] = $res[1];
         }
 
