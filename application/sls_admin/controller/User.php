@@ -38,21 +38,7 @@ class User extends Data {
         }
 
         //        $list = $this->getUserList($where);
-        $list = db('user')
-            ->where($where)
-            ->field([
-                'id',
-                'pid',
-                'username',
-                'email',
-                'status',
-                'sex',
-                'address',
-                'birthday',
-                'create_time',
-                'update_time'
-            ])
-            ->select();
+        $list = db('user')->select();
 
         //通过无线分类，获取到当前用户的子数据
         /*$categories = new Categories();
