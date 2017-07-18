@@ -5,7 +5,7 @@ use org\util\Categories;
 use think\Db;
 use think\Request;
 
-class User extends Data {
+class User {
 
     /**
      * 查询用户列表信息
@@ -43,7 +43,7 @@ class User extends Data {
         $categories = new Categories();
         $list       = $categories->unlimitedForLevel($list, $userinfo['id']);*/
 
-        $data['data']['list'] = [];
+        $data['data'] = [];
 
         return $data;
     }
