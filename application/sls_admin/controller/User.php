@@ -16,7 +16,6 @@ class User extends Data {
 
         //接收请求参数
         $request = request();
-        $params  = $request->get();
 
         //获取当前用户信息和用户列表
         $User     = db('user');
