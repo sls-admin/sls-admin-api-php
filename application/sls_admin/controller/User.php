@@ -1,4 +1,5 @@
 <?php
+
 namespace app\sls_admin\controller;
 
 use org\util\Categories;
@@ -36,7 +37,22 @@ class User extends Data {
             ];
         }
 
-        $list = $this->getUserList($where);
+        //        $list = $this->getUserList($where);
+        $list = db('user')
+            ->where($where)
+            ->field([
+                'id',
+                'pid',
+                'username',
+                'email',
+                'status',
+                'sex',
+                'address',
+                'birthday',
+                'create_time',
+                'update_time'
+            ])
+            ->select();
 
         //通过无线分类，获取到当前用户的子数据
         /*$categories = new Categories();
@@ -166,64 +182,65 @@ class User extends Data {
         $request = request();
         $data    = $request->except(['token']);
 
-        if($data){
-            if($data['username']){
-                if($data['password']){
-                    if($data['repassword']){
-                        if($data['password']===$data['repassword']){
+        if ($data) {
+            if ($data['username']) {
+                if ($data['password']) {
+                    if ($data['repassword']) {
+                        if ($data['password'] === $data['repassword']) {
                             //查询检测
                             $find = db('user')
                                 ->where([
                                     'username' => $data['username']
-                                ])->find();
-                            if($find){
+                                ])
+                                ->find();
+                            if ($find) {
                                 $return_data['msg']    = '该用户名已存在';
                                 $return_data['status'] = 1;
-                            }else{
-                                $user_data=[
-                                    'username'=>$data['username'],
-                                    'password'=>md5($data['password']),
-                                    'token'   => md5(md5($data['username'].time())),
-                                    'create_time'=>date('Y-m-d H:i:s', time()),
-                                    'update_time'=>date('Y-m-d H:i:s', time()),
-                                    'pid'=>78,
-                                    'sex'=>3,
-                                    'email'=>'',
-                                    'birthday'=>'1992-11-05',
-                                    'address'=>'',
-                                    'status'=>1,
-                                    'access_status'=>2,
-                                    'web_routers'=>'',
-                                    'api_routers'=>'',
-                                    'default_web_routers'=>''
+                            } else {
+                                $user_data = [
+                                    'username'            => $data['username'],
+                                    'password'            => md5($data['password']),
+                                    'token'               => md5(md5($data['username'].time())),
+                                    'create_time'         => date('Y-m-d H:i:s', time()),
+                                    'update_time'         => date('Y-m-d H:i:s', time()),
+                                    'pid'                 => 78,
+                                    'sex'                 => 3,
+                                    'email'               => '',
+                                    'birthday'            => '1992-11-05',
+                                    'address'             => '',
+                                    'status'              => 1,
+                                    'access_status'       => 2,
+                                    'web_routers'         => '',
+                                    'api_routers'         => '',
+                                    'default_web_routers' => ''
                                 ];
-                                $res = db('user')->insertGetId($user_data);
-                                if($res){
+                                $res       = db('user')->insertGetId($user_data);
+                                if ($res) {
                                     unset($user_data['password']);
-                                    $user_data['id']=$res;
-//                                    $return_data['data']['userinfo']=$user_data;
-                                }else{
+                                    $user_data['id'] = $res;
+                                    //                                    $return_data['data']['userinfo']=$user_data;
+                                } else {
                                     $return_data['msg']    = '注册失败';
                                     $return_data['status'] = 1;
                                 }
                             }
-                        }else{
+                        } else {
                             $return_data['msg']    = '两次输入密码不一致';
                             $return_data['status'] = 1;
                         }
-                    }else{
+                    } else {
                         $return_data['msg']    = '确认密码不能为空';
                         $return_data['status'] = 1;
                     }
-                }else{
+                } else {
                     $return_data['msg']    = '密码不能为空';
                     $return_data['status'] = 1;
                 }
-            }else{
+            } else {
                 $return_data['msg']    = '用户名不能为空';
                 $return_data['status'] = 1;
             }
-        }else{
+        } else {
             $return_data['msg']    = '没有提交数据';
             $return_data['status'] = 1;
         }
@@ -364,8 +381,8 @@ class User extends Data {
         } else {
             //检测当前登录用户是否有权限修改这个用户信息
             if ($this->checkIsChild($data['id'])) {
-                $info=[
-                    'id'=>$data['id'],
+                $info = [
+                    'id'                  => $data['id'],
                     'web_routers'         => $data['web_routers'],
                     'api_routers'         => $data['api_routers'],
                     'default_web_routers' => $data['default_web_routers'],
@@ -381,7 +398,7 @@ class User extends Data {
                         'access_status'       => $data['access_status']
                     ]);
 
-                $return_data['data']['access'] =$info;
+                $return_data['data']['access'] = $info;
 
             } else {
                 $return_data['status'] = 1;
@@ -464,7 +481,7 @@ class User extends Data {
         $request = request();
         if ($request->isPost()) {
             if ($request->post('id')) {
-                $uid=$request->post('id');
+                $uid      = $request->post('id');
                 $userinfo = $this->getUserInfo();
                 if ($this->checkIsChild($uid)) {
                     $status_info = $this->getUserInfo($uid);
