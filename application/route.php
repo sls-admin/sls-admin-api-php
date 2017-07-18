@@ -12,9 +12,9 @@
 use think\Route;
 
 /**
- * 默认根域名绑定到coding模块
+ * 默认根域名绑定到sls_admin模块
  */
- Route::bind('coding');
+ Route::bind('sls_admin');
 
 return [
 	'__pattern__' => [
