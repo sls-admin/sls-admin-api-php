@@ -22,7 +22,7 @@ class User extends Data {
         $userinfo = $this->getUserInfo();
 
         //搜索查询
-        $where = [];
+        /*$where = [];
         if (!empty($request->get('username'))) {
             $where['username'] = [
                 'like',
@@ -36,13 +36,13 @@ class User extends Data {
             ];
         }
 
-        $list = $this->getUserList($where);
+        $list = $this->getUserList($where);*/
 
         //通过无线分类，获取到当前用户的子数据
         /*$categories = new Categories();
         $list       = $categories->unlimitedForLevel($list, $userinfo['id']);*/
 
-        $data['data']['list'] = $list;
+        $data['data']['list'] = $userinfo;
 
         return $data;
     }
