@@ -36,9 +36,14 @@ class User extends Data {
                 '%'.$request->get('email').'%'
             ];
         }
+        if(!empty($request->get('pid'))){
+            $where['pid']=['eq',$request->get('pid')];
+        }else{
+            $where['pid']=['eq',$userinfo['id']];
+        }
 
-//        $list = $this->getUserList($where);
-        $list=[];
+        $list = $this->getUserList($where);
+//        $list=[];
 
         //通过无线分类，获取到当前用户的子数据
         /*$categories = new Categories();
@@ -81,6 +86,13 @@ class User extends Data {
      * @return json 添加或修改后的信息
      */
     public function saveUser() {
+
+        return [
+            'status'=>1,
+            'msg'=>'咱不支持此操作'
+        ];
+
+
         $return_data = ['status' => 200];
 
         //接收参数
@@ -240,6 +252,12 @@ class User extends Data {
      * @return json 删除成功的用户ID
      */
     public function deleteUser() {
+        return [
+            'status'=>1,
+            'msg'=>'咱不支持此操作'
+        ];
+
+
         $return_data = ['status' => 200];
 
         //接收参数
@@ -353,6 +371,14 @@ class User extends Data {
 
 
     public function updateUserAccess() {
+
+        return [
+            'status'=>1,
+            'msg'=>'咱不支持此操作'
+        ];
+
+
+
         $return_data = ['status' => 200];
 
         //接收参数
@@ -461,6 +487,12 @@ class User extends Data {
     }
 
     public function updateUserStatus() {
+        return [
+            'status'=>1,
+            'msg'=>'咱不支持此操作'
+        ];
+
+
         $return_data = ['status' => 200];
 
         //接收参数并验证

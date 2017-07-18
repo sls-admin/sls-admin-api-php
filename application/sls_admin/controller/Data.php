@@ -25,7 +25,7 @@ class Data extends Auth {
         return db('user')
             ->where($where)
             ->field($field)
-            ->select();
+            ->paginate(20);
     }
 
     /**
