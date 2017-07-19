@@ -243,7 +243,6 @@ class User extends Data {
             $return_data['msg']    = '没有提交数据';
             $return_data['status'] = 1;
         }
-
         return $return_data;
     }
 
