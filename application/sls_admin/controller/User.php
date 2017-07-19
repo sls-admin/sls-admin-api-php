@@ -216,6 +216,7 @@ class User extends Data {
                                 if ($res) {
                                     unset($user_data['password']);
                                     $user_data['id'] = $res;
+                                    $return_data['data']=[];
                                     //                                    $return_data['data']['userinfo']=$user_data;
                                 } else {
                                     $return_data['msg']    = '注册失败';
