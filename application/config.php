@@ -243,8 +243,8 @@ $config = [
 	],
 ];
 
-if (strpos($_SERVER['HTTP_HOST'], 'sailengsi.com') !== false) {
+/*if (strpos($_SERVER['HTTP_HOST'], 'sailengsi.com') !== false) {
 	$config['url_domain_root'] = 'api.sailengsi.com';
-}
+}*/
 
 return $config;
