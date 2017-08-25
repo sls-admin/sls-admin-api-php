@@ -20,7 +20,7 @@ class Data extends Auth {
         'address',
         'birthday',
         'create_time',
-        'update_time',
+        'update_time'
     ]) {
         return db('user')
             ->where($where)

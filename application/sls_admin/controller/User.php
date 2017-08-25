@@ -36,20 +36,27 @@ class User extends Data {
                 '%'.$request->get('email').'%'
             ];
         }
-        if(!empty($request->get('pid'))){
-            $where['pid']=['eq',$request->get('pid')];
-        }else{
-            $where['pid']=['eq',$userinfo['id']];
+        if (!empty($request->get('pid'))) {
+            if ($this->checkIsChild($request->get('pid'))) {
+                $data['status'] = 1;
+                $data['msg']    = '您要查询的用户不是您也不是您自己的，您没用权限！';
+            } else {
+                $where['pid'] = [
+                    'eq',
+                    $request->get('pid')
+                ];
+            }
+        } else {
+            $where['pid'] = [
+                'eq',
+                $userinfo['id']
+            ];
         }
 
-        $list = $this->getUserList($where);
-//        $list=[];
-
-        //通过无线分类，获取到当前用户的子数据
-        /*$categories = new Categories();
-        $list       = $categories->unlimitedForLevel($list, $userinfo['id']);*/
-
-        $data['data']['list'] = $list;
+        if ($data['status'] === 200) {
+            $list                 = $this->getUserList($where);
+            $data['data']['list'] = $list;
+        }
 
         return $data;
     }
@@ -86,12 +93,6 @@ class User extends Data {
      * @return json 添加或修改后的信息
      */
     public function saveUser() {
-
-        return [
-            'status'=>1,
-            'msg'=>'咱不支持此操作'
-        ];
-
 
         $return_data = ['status' => 200];
 
@@ -215,8 +216,8 @@ class User extends Data {
                                 $res       = db('user')->insertGetId($user_data);
                                 if ($res) {
                                     unset($user_data['password']);
-                                    $user_data['id'] = $res;
-                                    $return_data['data']=[];
+                                    $user_data['id']     = $res;
+                                    $return_data['data'] = [];
                                     //                                    $return_data['data']['userinfo']=$user_data;
                                 } else {
                                     $return_data['msg']    = '注册失败';
@@ -243,6 +244,7 @@ class User extends Data {
             $return_data['msg']    = '没有提交数据';
             $return_data['status'] = 1;
         }
+
         return $return_data;
     }
 
@@ -253,8 +255,8 @@ class User extends Data {
      */
     public function deleteUser() {
         return [
-            'status'=>1,
-            'msg'=>'咱不支持此操作'
+            'status' => 1,
+            'msg'    => '咱不支持此操作'
         ];
 
 
@@ -373,10 +375,9 @@ class User extends Data {
     public function updateUserAccess() {
 
         return [
-            'status'=>1,
-            'msg'=>'咱不支持此操作'
+            'status' => 1,
+            'msg'    => '咱不支持此操作'
         ];
-
 
 
         $return_data = ['status' => 200];
@@ -488,8 +489,8 @@ class User extends Data {
 
     public function updateUserStatus() {
         return [
-            'status'=>1,
-            'msg'=>'咱不支持此操作'
+            'status' => 1,
+            'msg'    => '咱不支持此操作'
         ];
 
 

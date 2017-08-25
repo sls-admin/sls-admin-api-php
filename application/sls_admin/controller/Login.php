@@ -1,4 +1,5 @@
 <?php
+
 namespace app\sls_admin\controller;
 
 use think\Controller;
@@ -151,6 +152,60 @@ class Login extends Controller {
             $data['status'] = 1;
             $data['msg']    = '请求方式必须是post!';
         }
+
+
+        $data['data']['routes'] = [
+            [
+                'path'      => '/function',
+                'name'      => '静态演示',
+                'icon'      => 'inbox',
+                'component_path'=>'Function',
+                'component' => 'Home',
+                'redirect'  => '/function/open',
+                'children'  => [
+                    [
+                        'path'      => 'open',
+                        'name'      => '公共内容',
+                        'icon'      => 'inbox',
+                        'component_path'=>'Open',
+                        'component' => 'Content',
+                        'redirect'  => '/function/open/echarts',
+                        'children'  => [
+                            [
+                                'path'      => 'echarts',
+                                'name'      => '图表',
+                                'icon'      => 'bar-chart',
+                                'component' => 'Echarts'
+                            ],
+                            [
+                                'path'      => 'list',
+                                'name'      => '列表',
+                                'icon'      => 'reorder',
+                                'component' => 'List'
+                            ],
+                            [
+                                'path'      => 'form',
+                                'name'      => '表单',
+                                'icon'      => 'edit',
+                                'component' => 'Form'
+                            ],
+                            [
+                                'path'      => 'vuex',
+                                'name'      => 'vuex',
+                                'icon'      => 'window-restore',
+                                'component' => 'Vuex'
+                            ],
+                            [
+                                'path'      => 'test404',
+                                'name'      => '测试404',
+                                'icon'      => 'window-restore',
+                                'component' => 'Test404'
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ];
 
         return $data;
     }
