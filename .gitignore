@@ -1,0 +1,7 @@
+.idea
+composer.lock
+*.log
+.phpintel
+api-managers.html
+runtime
+public/uploads/*
