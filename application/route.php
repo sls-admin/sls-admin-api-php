@@ -14,7 +14,7 @@ use think\Route;
 /**
  * 默认根域名绑定到sls_admin模块
  */
- Route::bind('sls_admin');
+ Route::bind('user_system');
 
 return [
 	'__pattern__' => [
