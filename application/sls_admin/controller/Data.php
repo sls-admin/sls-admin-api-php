@@ -84,16 +84,14 @@ class Data extends Auth {
                                     ->header('token'))
             ->find();
 
-        //所有用户信息
-        $list = $this->getUserList();
+        //需要操作的用户信息
+        $target_userinfo = $this->getUserInfo($id);
 
-        //获取当前登录用户的所有子数据ID，以及把自己的ID，因为自己的数据是可以操作的
-        $categories  = new Categories();
-        $child_ids   = $categories->getChildsId($list, $id_info['id']);
-        $child_ids[] = $id_info['id'];
+        $self_userinfo = $this->getUserInfo();
 
-        //检测代操作的用户ID在不在这个范围内
-        return in_array($id, $child_ids);
+
+        //目标用户的pid大于当前用户的ID，才成立。
+        return $target_userinfo['pid'] >= $self_userinfo['id'];
     }
 
     /**

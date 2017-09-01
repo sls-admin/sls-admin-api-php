@@ -4,7 +4,7 @@ namespace app\sls_admin\controller;
 
 use org\util\Categories;
 use think\Db;
-use think\exception\ErrorException;
+use think\Request;
 
 class User extends Data {
 
@@ -37,16 +37,10 @@ class User extends Data {
             ];
         }
         if (!empty($request->get('pid'))) {
-            $find = $this->getUserInfo($request->get('pid'));
-            if ($find['pid'] >= $userinfo['id']) {
-                $where['pid'] = [
-                    'eq',
-                    $request->get('pid')
-                ];
-            } else {
-                $data['status'] = 1;
-                $data['msg']    = '您要查询的用户不属于您自己的子用户';
-            }
+            $where['pid'] = [
+                'eq',
+                $request->get('pid')
+            ];
         } else {
             $where['pid'] = [
                 'eq',
@@ -54,29 +48,28 @@ class User extends Data {
             ];
         }
 
-        if ($data['status'] === 200) {
-            $page_size = $request->get('page_size')
-                ? $request->get('page_size')
-                : 20;
 
-            $list = db('user')
-                ->where($where)
-                ->field([
-                    'id',
-                    'pid',
-                    'username',
-                    'email',
-                    'status',
-                    'sex',
-                    'address',
-                    'birthday',
-                    'create_time',
-                    'update_time',
-                ])
-                ->paginate($page_size);
+        $page_size = $request->get('page_size')
+            ? $request->get('page_size')
+            : 20;
 
-            $data['data']['list'] = $list;
-        }
+        $list = db('user')
+            ->where($where)
+            ->field([
+                'id',
+                'pid',
+                'username',
+                'email',
+                'status',
+                'sex',
+                'address',
+                'birthday',
+                'create_time',
+                'update_time',
+            ])
+            ->paginate($page_size);
+
+        $data['data']['list'] = $list;
 
         return $data;
     }
@@ -114,82 +107,93 @@ class User extends Data {
      */
     public function saveUser() {
 
-        $data = [
-            'status' => 200
-        ];
+        /*return [
+            'status' => 1,
+            'msg'    => '咱不支持此操作'
+        ];*/
 
+
+        $return_data = ['status' => 200];
+
+        //接收参数
         $request = request();
+        $data    = $request->except(['token']);
 
-        $submit_data = $request->only([
-            'id',
-            'pid',
-            'username',
-            'email',
-            'sex',
-            'status',
-            'birthday',
-            'address'
-        ]);
-
-        //修改
-        if (isset($submit_data['id'])) {
-            $data['status']=1;
-            $data['msg']='为了节省时间，不支持修改。';
-
-            //添加
+        //验证用户信息
+        $result = $this->validate($data, 'User');
+        if (true !== $result) {
+            $return_data['status'] = 1;
+            $return_data['msg']    = $result;
         } else {
-            $userinfo = $this->getUserInfo();
-            if (empty($submit_data['pid'])) {
-                $submit_data['pid'] = $userinfo['id'];
-            } else {
-                if ($submit_data['pid'] < $userinfo['id']) {
-                    $data['status'] = 1;
-                    $data['msg']    = '您只能给自己以及自己的子用户添加用户。';
-                }
-            }
 
+            $data['status'] = $data['status'] === true
+                ? 1
+                : 2;
 
-            if ($data['status'] === 200) {
-                $submit_data['password'] = md5('123456');
-                $submit_data['token']    = md5(md5('123456'.time()));
-                $data['create_time']     = date('Y-m-d H:i:s', time());
-                try {
-                    if ($id = db('user')->insertGetId($submit_data)) {
-                        unset($submit_data['password']);
-                        unset($submit_data['token']);
-                        $submit_data['id']        = $id;
-                        $data['data']['userinfo'] = $submit_data;
-                    } else {
-                        $data['status'] = 1;
-                        $data['msg']    = "添加用户失败。";
+            //如果有ID，代表是修改，否则为添加
+            if (!empty($data['id'])) {
+                //检测当前登录用户是否有权限修改这个用户信息
+                if ($this->checkIsChild($data['id'])) {
+
+                    $setInfos = $this->getOptions();
+                    $userinfo = $this->getUserInfo($data['id']);
+                    if (stripos($setInfos['disabled_update_pass'], $data['id'].'') !== false) {
+                        if ($data['username'] && $userinfo['username'] !== $data['username']) {
+                            $return_data['msg']    = '测试用户不允许修改用户名';
+                            $return_data['status'] = 1;
+                        } else {
+                            if ($userinfo['status'] !== $data['status']) {
+                                $return_data['msg']    = '测试用户不允许修改状态';
+                                $return_data['status'] = 1;
+                            }
+                        }
                     }
-                } catch (\Exception $e) {
-                    $data['status'] = 1;
-                    $data['msg']    = "添加用户错误。".$e->getCode()."<--->".$e->getMessage()."!";
-                    /*$data['exception']                     = [];
-                    $data['exception']['getCode']          = $e->getCode();
-                    $data['exception']['getFile']          = $e->getFile();
-                    $data['exception']['getLine']          = $e->getLine();
-                    $data['exception']['getMessage']       = $e->getMessage();
-                    $data['exception']['getPrevious']      = $e->getPrevious();
-                    $data['exception']['getTrace']         = $e->getTrace();
-                    $data['exception']['getTraceAsString'] = $e->getTraceAsString();*/
+
+                    if ($return_data['status'] != 1) {
+                        $res = db('user')
+                            ->where('id', $data['id'])
+                            ->update($data);
+                        if (!$res) {
+                            $return_data['msg']    = '修改失败';
+                            $return_data['status'] = 1;
+                        } else {
+                            $return_data['data']['data'] = $data;
+                        }
+                    }
+                } else {
+                    $return_data['msg']    = '只能修改自己以及自己的子数据';
+                    $return_data['status'] = 1;
+                }
+            } else {
+                //填充默认信息
+                $data['create_time'] = date('Y-m-d H:i:s', time());
+                $data['password']    = md5('123456');
+                $data['token']       = md5(md5($data['username'].time()));
+
+                //获取当前登录的用户信息ID，给新数据的pid用
+                $id_info     = db('user')
+                    ->field('id')
+                    ->where('token', Request::instance()
+                                            ->header('token'))
+                    ->find();
+                $data['pid'] = $id_info['id'];
+
+                //返回插入成功后ID
+                $res = db('user')->insertGetId($data);
+                if (!$res) {
+                    $return_data['msg']    = '添加失败';
+                    $return_data['status'] = 1;
+                } else {
+                    $data['id']                  = $res;
+                    $return_data['data']['data'] = $data;
                 }
             }
-
-
         }
 
-        return $data;
-
+        return $return_data;
     }
 
 
-    /**
-     * 注册用户
-     *
-     * @return array
-     */
     public function register() {
         $return_data = ['status' => 200];
 
@@ -269,12 +273,17 @@ class User extends Data {
      * @return json 删除成功的用户ID
      */
     public function deleteUser() {
+        return [
+            'status' => 1,
+            'msg'    => '咱不支持此操作'
+        ];
+
 
         $return_data = ['status' => 200];
 
         //接收参数
         $request = request();
-        $data    = $request->only(['id']);
+        $data    = $request->except(['token']);
         if ($data && $data['id']) {
             //把用户字符串分割成数组
             $idArr = explode(',', $data['id']);
