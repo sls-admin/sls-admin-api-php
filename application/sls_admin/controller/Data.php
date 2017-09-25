@@ -6,6 +6,14 @@ use org\util\Categories;
 use think\Request;
 
 class Data extends Auth {
+
+
+    protected $request;
+
+    public function __construct(Request $request) {
+        $this->request = $request;
+    }
+
     /**
      * 获取用户列表
      * @return array 用户列表

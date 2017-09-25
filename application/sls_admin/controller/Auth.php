@@ -2,6 +2,7 @@
 namespace app\sls_admin\controller;
 
 use think\Controller;
+use think\Request;
 
 class Auth extends Controller {
     protected $beforeActionList = [

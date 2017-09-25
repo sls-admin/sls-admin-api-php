@@ -17,9 +17,9 @@ return [
 	// 数据库名
 	'database' => '',
 	// 用户名
-	'username' => 'root',
+	'username' => 'sls_admin',
 	// 密码
-	'password' => 'sailengsi26sql_',
+	'password' => 'sls_126_admin',
 	// 端口
 	'hostport' => '3306',
 	// 连接dsn
