@@ -5,3 +5,4 @@ composer.lock
 api-managers.html
 runtime
 public/uploads/*
+.env
