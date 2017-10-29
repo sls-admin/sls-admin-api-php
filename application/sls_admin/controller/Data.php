@@ -57,18 +57,10 @@ class Data extends Auth {
             ->field([
                 'id',
                 'pid',
+                'path',
                 'username',
                 'email',
                 'status',
-                'sex',
-                'address',
-                'birthday',
-                'create_time',
-                'update_time',
-                'access_status',
-                'web_routers',
-                'api_routers',
-                'default_web_routers'
             ])
             ->find();
     }

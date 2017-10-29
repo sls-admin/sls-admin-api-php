@@ -13,24 +13,40 @@ use think\Validate;
 class User extends Validate {
     protected $rule = [
         [
-            'email',
-            'require|email|unique:user|length:5,26',
-            '邮箱不能为空|邮箱格式不正确|邮箱已存在|邮箱长度必须在5-26位之间',
-        ],
-        [
             'username',
-            'require|unique:user',//length:6,26
-            '用户名不能为空|用户名已存在',
+            'require|unique:user|length:6,32',
+            '用户名不能为空|用户名已存在|用户名长度必须在6-32位之间',
         ],
         [
-            'birthday',
-            'require|date|before:2006-01-01|after:1930-01-01',
-            '生日不能为空|生日格式不正确|生日不能大于2006年|生日不能小于1930年',
+            'password',
+            'require|length:6,32',
+            '密码不能为空|密码长度必须在6-32位之间',
         ],
         [
-            'address',
+            'repassword',
+            'confirm:password',
+            '两次密码不一致',
+        ],
+        [
+            'old_password',
             'require',
-            '地址不能为空',
+            '密码不能为空',
+        ]
+    ];
+
+    protected $scene = [
+        'add'             => [
+            'username',
+            'password',
+            'repassword'
         ],
+        'create'          => [
+            'username'
+        ],
+        'update_password' => [
+            'old_password',
+            'password',
+            'repassword'
+        ]
     ];
 }
