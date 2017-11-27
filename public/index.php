@@ -5,8 +5,8 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 header('Access-Control-Allow-Methods: OPTIONS,GET, POST, PUT, DELETE');
 header("Access-Control-Allow-Credentials:true");
 
-echo 'test';
-die;
+//echo 'test';
+//die;
 
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../application/');
