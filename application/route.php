@@ -14,15 +14,26 @@ use think\Route;
 /**
  * 默认根域名绑定到sls_admin模块
  */
- Route::bind('sls_admin');
+Route::bind('sls_admin');
+
+Route::group('api', function () {
+    Route::post('register', 'Login/register');
+});
 
 return [
-	'__pattern__' => [
-		'name' => '\w+',
-	],
-	'[hello]' => [
-		':id' => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-		':name' => ['index/hello', ['method' => 'post']],
-	],
+    '__pattern__' => [
+        'name' => '\w+',
+    ],
+    '[hello]'     => [
+        ':id'   => [
+            'index/hello',
+            ['method' => 'get'],
+            ['id' => '\d+']
+        ],
+        ':name' => [
+            'index/hello',
+            ['method' => 'post']
+        ],
+    ],
 
 ];

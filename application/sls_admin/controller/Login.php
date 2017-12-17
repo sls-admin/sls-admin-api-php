@@ -3,11 +3,17 @@ namespace app\sls_admin\controller;
 
 use think\Controller;
 use think\Db;
+use think\Request;
 
 /**
  * @api {post} Login/login 登录
  */
 class Login extends Controller {
+
+    public function __construct(Request $request = null) {
+        $this->request = Request::instance();
+        parent::__construct($request);
+    }
 
     public function getOptions() {
         $Set  = db('setting');
@@ -116,6 +122,12 @@ class Login extends Controller {
             $data['msg']    = '请求方式必须是post!';
         }
 
+        return $data;
+    }
+
+
+    public function register(){
+        $data=$this->request->post();
         return $data;
     }
 }
