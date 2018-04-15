@@ -243,8 +243,8 @@ $config = [
 	],
 ];
 
-if (strpos($_SERVER['HTTP_HOST'], 'sailengsi.org') !== false) {
-	$config['url_domain_root'] = 'php.slsadmin.sailengsi.org';
+if (strpos($_SERVER['HTTP_HOST'], 'slsadmin.org') !== false) {
+	$config['url_domain_root'] = 'php.slsadmin.org';
 }
 
 return $config;
